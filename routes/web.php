@@ -11,7 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-
-    return view('welcome');
+Route::group(['namespace' => 'Frontend'], function () {
+    Route::get('/', 'HomeController@showHomePage')->name('home');
 });
