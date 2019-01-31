@@ -25,7 +25,7 @@
                             <li><a href="#" class="text-white">Logout</a></li>
                         @endauth
 
-                        <li><a href="#" class="text-white">Cart</a></li>
+                        <li><a href="{{ route('cart.show') }}" class="text-white">Cart</a></li>
 
                     </ul>
                 </div>
@@ -34,7 +34,7 @@
     </div>
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
+            <a href="{{route('frontend.home')}}" class="navbar-brand d-flex align-items-center">
                 <i class="fab fa-opencart px-2"></i>
                 <strong> {{ config('app.name') }}</strong>
             </a>
