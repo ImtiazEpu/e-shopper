@@ -36,7 +36,7 @@
                             <dd><p>{{ $product->description }}</p></dd>
                         </dl>
                         <hr>
-                        <form action="" method="post">
+                        <form action="{{route('cart.add')}}" method="post">
                             @csrf
                             <input type="hidden" name="product_id" value="{{$product->id}}">
                             <button type="submit" class="btn btn-lg btn-secondary">

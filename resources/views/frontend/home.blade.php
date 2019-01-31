@@ -17,8 +17,13 @@
                                 </a>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">ADD TO CART
-                                        </button>
+                                        <form action="{{ route('cart.add') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{$product->id}}">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                                <i class="fa fa-shopping-cart"></i> ADD TO CART
+                                            </button>
+                                        </form>
                                     </div>
                                     <strong class="text-muted">
                                         @if($product->sale_price !== null && $product->sale_price > 0)
