@@ -16,8 +16,8 @@
                     <h4 class="text-white">Menu</h4>
                     <ul class="list-unstyled">
                         @guest()
-                            <li><a href="#" class="text-white">Create an account</a></li>
-                            <li><a href="#" class="text-white">Login</a></li>
+                            <li><a href="{{ route('register') }}" class="text-white">Create an account</a></li>
+                            <li><a href="{{ route('login') }}" class="text-white">Login</a></li>
                         @endguest
 
                         @auth()
