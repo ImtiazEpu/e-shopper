@@ -13,6 +13,8 @@ class HomeController extends Controller
         $data['products'] = Product::select(['id','title', 'slug', 'price', 'sale_price'])
             ->where('active', 1)
             ->paginate(9);
+        $data['cart'] = session()->has('cart') ? session()->get('cart') : [];
+        $data['total'] = array_sum(array_column($data['cart'], 'total_price'));
         return view('frontend.home',$data);
 
     }

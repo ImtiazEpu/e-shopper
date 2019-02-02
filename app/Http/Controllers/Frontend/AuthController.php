@@ -99,4 +99,11 @@ AuthController extends Controller
         $this->setError('Invalid token.');
         return redirect()->route('login');
     }
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return redirect('/');
+    }
 }
