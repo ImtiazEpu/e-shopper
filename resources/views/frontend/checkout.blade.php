@@ -14,6 +14,7 @@
             </div>
         @endguest
     </div>
+    @auth()
     <div class="container">
         <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
@@ -55,12 +56,16 @@
             </div>
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3">Billing address</h4>
-                <form class="needs-validation" novalidate>
+
+                @include('frontend.partials.message')
+
+                <form action="{{ route('order') }}" method="post">
+                    @csrf
                     <div class="mb-3">
                         <label for="customer_name">Customer Name</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ auth()->user()
-                            ->name }}" required>
+                            <input type="text" class="form-control" id="customer_name" name="customer_name"
+                                   value="{{ auth()->user()->name }}" required>
                         </div>
                     </div>
 
@@ -92,4 +97,5 @@
             </div>
         </div>
     </div>
+    @endauth
 @endsection

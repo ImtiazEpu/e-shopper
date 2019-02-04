@@ -16,8 +16,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(100);
-        $categories = Category::select(['name','slug'])->where('category_id', null)->get();
-        view()->share('categories', $categories);
+        if (Schema::hasTable('categories')){
+            $categories = Category::select(['name','slug'])->where('category_id', null)->get();
+            view()->share('categories', $categories);
+        }
+
     }
 
     /**
