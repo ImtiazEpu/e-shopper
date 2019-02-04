@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\User;
 use App\Notifications\RegistrationEmailNotification;
 use Carbon\Carbon;
@@ -109,5 +110,13 @@ AuthController extends Controller
         auth()->logout();
 
         return redirect('/');
+    }
+
+    public function profile()
+    {
+        $data = [];
+        $data['cart'] = session()->has('cart') ? session()->get('cart') : [];
+        $data['orders'] = Order::where('user_id', auth()->user()->id)->get();
+        return view('frontend.auth.profile', $data);
     }
 }
