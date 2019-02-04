@@ -28,7 +28,7 @@
                                 <a href="{{ route('cart.show') }}" class="text-white">
                                     Cart
                                     @if($cart)
-                                        <span class="badge badge-light">{{ count($cart) }}</span>
+                                        <span class="badge badge-light">{{ count($cart)}}</span>
                                     @endif
                                 </a>
                             </li>
