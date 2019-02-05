@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
+use App\Notifications\OrderEmailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -115,6 +116,8 @@ class CartController extends Controller
                 'price' => $product['total_price'],
             ]);
         }
+
+            auth()->user()->notify(new OrderEmailNotification($order, auth()->user()));
             session()->forget(['total', 'cart']);
             $this->setSuccess('Order Placed Successfully');
 
@@ -129,5 +132,6 @@ class CartController extends Controller
 
         return view('frontend.orders.details', $data);
     }
+
 
 }
