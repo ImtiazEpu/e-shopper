@@ -2,6 +2,9 @@
 
 E-Shopper is an open source ecommerce platform management system using Laravel.
 ## Packages Used
+- [Laravel media library](https://github.com/spatie/laravel-medialibrary)
+- [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
+- [Laravel IDE helper for PhpStorm](https://github.com/barryvdh/laravel-ide-helper)
 
 ## Installation instruction
 
