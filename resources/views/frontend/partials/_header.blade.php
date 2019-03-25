@@ -25,7 +25,8 @@
                             <li><a href="{{route('logout')}}" class="text-white">Logout</a></li>
                         @endauth
                             <li>
-                                <a href="{{ route('cart.show') }}" class="text-white">
+                                <a href="{{ route('cart.show') }}" class="btn-success btn-sm text-decoration-none"><i class="fa
+                                fa-shopping-cart"></i>
                                     Cart
                                     @if($cart)
                                         <span class="badge badge-light">{{ count($cart)}}</span>
