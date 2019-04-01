@@ -6,8 +6,8 @@
     <link rel="shortcut icon" href="{{ asset('shopping-cart.png') }}">
 
     <title>{{ config('app.name') }}</title>
-    <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/all.css')) }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/all.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     @yield('before_head')
@@ -20,7 +20,7 @@
 </main>
 
 @include('frontend.partials._footer')
-<script src="{{ asset(mix('js/all.js')) }}"></script>
+<script src="{{ mix('js/all.js') }}"></script>
 @yield('before_body')
 </body>
 </html>
