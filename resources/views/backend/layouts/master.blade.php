@@ -13,13 +13,9 @@
     @yield('before_head')
 </head>
 <body>
-@include('frontend.partials._header')
-
-<main role="main">
+@include('backend.partials._dash_header')
     @yield('main')
-</main>
-
-@include('frontend.partials._footer')
+@include('backend.partials._dash_footer')
 <script src="{{ mix('js/all.js') }}"></script>
 @yield('before_body')
 </body>

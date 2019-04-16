@@ -13,3 +13,4 @@ $factory->define(Product::class, function (Faker $faker) {
         'sale_price' => random_int(0, 1000),
     ];
 });
+
