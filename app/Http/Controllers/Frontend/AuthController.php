@@ -10,6 +10,7 @@ use App\Notifications\RegistrationEmailNotification;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class
 AuthController extends Controller
@@ -35,15 +36,18 @@ AuthController extends Controller
         $credentials = request()->only(['email', 'password']);
         if(auth()->attempt($credentials)) {
             if (Auth::user()->hasAnyRole('admin')) {
-                $this->setSuccess('Admin logged in.');
+                //$this->setSuccess('Admin logged in.');
+                alert()->success('Success', 'Admin logged in!')->toToast();
                 return redirect('/dashboard');
             } else {
                 if (auth()->user()->email_verified_at === null) {
-                    $this->setError('Your account is not activated.');
+                    session()->flush();
+                    alert()->warning('Pending', 'Your account is not activated!')->toToast();
                     return redirect()->route('login');
                 }
             }
-            $this->setSuccess('User logged in.');
+            //$this->setSuccess('User logged in.');
+            alert()->success('Success', auth()->user()->name.' logged in!')->toToast();
             return redirect('/');
         }/*else
             if (auth()->user()->email_verified_at === null) {
@@ -55,7 +59,9 @@ AuthController extends Controller
         }*/
 
 
-        $this->setError('Invalid credentials.');
+        //$this->setError('Invalid credentials.');
+        alert()->error('Invalid credentials', 'Your Email or password was incorrect!');
+
         return redirect()->back();
 
     }
@@ -94,7 +100,8 @@ AuthController extends Controller
             $user->notify(new RegistrationEmailNotification($user));
             //return $user;
 
-            $this->setSuccess('Registration successful');
+          //$this->setSuccess('Registration successful');
+            Alert::success('Success', 'Registration successful!');
             return redirect()->route('login');
         } catch (\Exception $e) {
             $this->setError($e->getMessage());
@@ -114,18 +121,20 @@ AuthController extends Controller
                 'email_verified_at' => Carbon::now(),
                 'email_verification_token' => null,
             ]);
-            $this->setSuccess('Account activated. You can login now.');
+            //$this->setSuccess('Account activated. You can login now.');
+            alert()->success('Activate', 'Account activated. You can login now.!');
             return redirect()->route('login');
         }
 
-        $this->setError('Invalid token.');
+        //$this->setError('Invalid token.');
+        alert()->error('Invalid token', 'Account activation token invalid!');
         return redirect()->route('login');
     }
 
     public function logout()
     {
         auth()->logout();
-
+        alert()->success('success', 'Successfully logged out')->toToast();
         return redirect('/');
     }
 

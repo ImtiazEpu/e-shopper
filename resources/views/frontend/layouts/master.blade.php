@@ -20,6 +20,7 @@
 </main>
 
 @include('frontend.partials._footer')
+@include('sweetalert::alert')
 <script src="{{ mix('js/all.js') }}"></script>
 @yield('before_body')
 </body>

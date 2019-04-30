@@ -16,6 +16,7 @@
 @include('backend.partials._dash_header')
     @yield('main')
 @include('backend.partials._dash_footer')
+@include('sweetalert::alert')
 <script src="{{ mix('js/all.js') }}"></script>
 @yield('before_body')
 </body>
