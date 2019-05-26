@@ -41,7 +41,7 @@ AuthController extends Controller
                 return redirect('/dashboard');
             } else {
                 if (auth()->user()->email_verified_at === null) {
-                    session()->flush();
+                    auth()->logout();
                     alert()->warning('Pending', 'Your account is not activated!')->toToast();
                     return redirect()->route('login');
                 }
