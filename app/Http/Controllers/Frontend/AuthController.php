@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Role;
 use App\Models\User;
 use App\Notifications\RegistrationEmailNotification;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class
 AuthController extends Controller
@@ -31,17 +34,34 @@ AuthController extends Controller
         }
 
         $credentials = request()->only(['email', 'password']);
-
-        if (auth()->attempt($credentials)) {
+        if(auth()->attempt($credentials)) {
+            if (Auth::user()->hasAnyRole('admin')) {
+                //$this->setSuccess('Admin logged in.');
+                alert()->success('Success', 'Admin logged in!')->toToast();
+                return redirect('/dashboard');
+            } else {
+                if (auth()->user()->email_verified_at === null) {
+                    auth()->logout();
+                    alert()->warning('Pending', 'Your account is not activated!')->toToast();
+                    return redirect()->route('login');
+                }
+            }
+            //$this->setSuccess('User logged in.');
+            alert()->success('Success', auth()->user()->name.' logged in!')->toToast();
+            return redirect('/');
+        }/*else
             if (auth()->user()->email_verified_at === null) {
                 $this->setError('Your account is not activated.');
                 return redirect()->route('login');
             }
             $this->setSuccess('User logged in.');
             return redirect('/');
-        }
+        }*/
 
-        $this->setError('Invalid credentials.');
+
+        //$this->setError('Invalid credentials.');
+        alert()->error('Invalid credentials', 'Your Email or password was incorrect!');
+
         return redirect()->back();
 
     }
@@ -60,7 +80,7 @@ AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'phone_number' => 'required|min:11|max:13|unique:users,phone_number',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|',
         ]);
 
         if ($validator->fails()) {
@@ -74,11 +94,15 @@ AuthController extends Controller
                 'password' => bcrypt(request()->input('password')),
                 'email_verification_token' => uniqid(time(), true) . str_random(16),
             ]);
+            $role = Role::select('id')->where('name','user')->first();
+            $user->roles()->attach($role);
+
             $user->notify(new RegistrationEmailNotification($user));
+            //return $user;
 
-            $this->setSuccess('Registration successful');
+          //$this->setSuccess('Registration successful');
+            Alert::success('Success', 'Registration successful!');
             return redirect()->route('login');
-
         } catch (\Exception $e) {
             $this->setError($e->getMessage());
             return redirect()->back();
@@ -97,18 +121,20 @@ AuthController extends Controller
                 'email_verified_at' => Carbon::now(),
                 'email_verification_token' => null,
             ]);
-            $this->setSuccess('Account activated. You can login now.');
+            //$this->setSuccess('Account activated. You can login now.');
+            alert()->success('Activate', 'Account activated. You can login now.!');
             return redirect()->route('login');
         }
 
-        $this->setError('Invalid token.');
+        //$this->setError('Invalid token.');
+        alert()->error('Invalid token', 'Account activation token invalid!');
         return redirect()->route('login');
     }
 
     public function logout()
     {
         auth()->logout();
-
+        alert()->success('success', 'Successfully logged out')->toToast();
         return redirect('/');
     }
 

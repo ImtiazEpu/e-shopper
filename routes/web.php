@@ -41,3 +41,7 @@ Route::group(['namespace' => 'Frontend'], function () {
 
 
 });
+Route::group(['middleware' => ['auth','auth.admin'],'prefix' => 'dashboard','namespace' => 'Backend', 'name'=>'backend'], function
+() {
+    Route::get('/', 'HomeController@showDashPage')->name('.dashboard');
+});

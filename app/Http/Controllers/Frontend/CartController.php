@@ -47,7 +47,8 @@ class CartController extends Controller
             ];
         }
         session(['cart' => $cart]);
-        session()->flash('message', $product->title . ' added to cart.');
+        //session()->flash('message', $product->title . ' added to cart.');
+        alert()->success($product->title, 'added to cart.')->toToast();
         return redirect()->route('cart.show');
     }
 
@@ -63,7 +64,8 @@ class CartController extends Controller
         $cart = session()->has('cart') ? session()->get('cart') : [];
         unset($cart[$request->input('product_id')]);
         session(['cart' => $cart]);
-        session()->flash('message', 'Product remove from your cart.');
+        //session()->flash('message', 'Product remove from your cart.');
+        alert()->success('Success', 'Product remove from your cart.')->toToast();
         return redirect()->back();
     }
 
@@ -119,7 +121,8 @@ class CartController extends Controller
 
             auth()->user()->notify(new OrderEmailNotification($order, auth()->user()));
             session()->forget(['total', 'cart']);
-            $this->setSuccess('Order Placed Successfully');
+            //$this->setSuccess('Order Placed Successfully');
+            alert()->success('Confirm', 'Order Placed Successfully')->toToast();
 
             return redirect()->route('order.details', $order->id);
     }
