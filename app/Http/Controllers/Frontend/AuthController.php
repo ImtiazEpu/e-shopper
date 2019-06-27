@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\RegistrationEmailNotification;
 use Auth;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -34,7 +35,7 @@ AuthController extends Controller
         }
 
         $credentials = request()->only(['email', 'password']);
-        if(auth()->attempt($credentials)) {
+        if (auth()->attempt($credentials)) {
             if (Auth::user()->hasAnyRole('admin')) {
                 //$this->setSuccess('Admin logged in.');
                 alert()->success('Success', 'Admin logged in!')->toToast();
@@ -47,8 +48,8 @@ AuthController extends Controller
                 }
             }
             //$this->setSuccess('User logged in.');
-            alert()->success('Success', auth()->user()->name.' logged in!')->toToast();
-            return redirect('/');
+            alert()->success('Welcome Back', auth()->user()->name . 'You are logged in!')->toToast($position = 'bottom-right');
+            return redirect()->intended();
         }/*else
             if (auth()->user()->email_verified_at === null) {
                 $this->setError('Your account is not activated.');
@@ -61,7 +62,6 @@ AuthController extends Controller
 
         //$this->setError('Invalid credentials.');
         alert()->error('Invalid credentials', 'Your Email or password was incorrect!');
-
         return redirect()->back();
 
     }
@@ -71,7 +71,7 @@ AuthController extends Controller
         $data = [];
         $data['cart'] = session()->has('cart') ? session()->get('cart') : [];
         $data['total'] = array_sum(array_column($data['cart'], 'total_price'));
-        return view('frontend.auth.register',$data);
+        return view('frontend.auth.register', $data);
     }
 
     public function processRegister()
@@ -94,16 +94,16 @@ AuthController extends Controller
                 'password' => bcrypt(request()->input('password')),
                 'email_verification_token' => uniqid(time(), true) . str_random(16),
             ]);
-            $role = Role::select('id')->where('name','user')->first();
+            $role = Role::select('id')->where('name', 'user')->first();
             $user->roles()->attach($role);
 
             $user->notify(new RegistrationEmailNotification($user));
             //return $user;
 
-          //$this->setSuccess('Registration successful');
+            //$this->setSuccess('Registration successful');
             Alert::success('Success', 'Registration successful!');
             return redirect()->route('login');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->setError($e->getMessage());
             return redirect()->back();
         }
@@ -134,7 +134,8 @@ AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        alert()->success('success', 'Successfully logged out')->toToast();
+        session(['cart' => []]);
+        alert()->success('Good Bye', 'See you next time')->toToast($position = 'bottom-right');
         return redirect('/');
     }
 
