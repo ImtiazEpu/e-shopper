@@ -11,6 +11,7 @@ class ProductController extends Controller
     public function showDetails($slug)
     {
         $data = [];
+        $data['cart'] = session()->has('cart') ? session()->get('cart') : [];
         $data['product'] = Product::where('slug', $slug)->where('active', 1)->first();
 
         if($data['product'] === null){
