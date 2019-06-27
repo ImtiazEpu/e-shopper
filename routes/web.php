@@ -1,5 +1,5 @@
 <?php
-
+use RealRashid\SweetAlert\Facades\Alert;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,7 +20,7 @@ Route::group(['namespace' => 'Frontend'], function () {
     Route::post('/cart/remove', 'CartController@removeFromCart')->name('cart.remove');
     Route::get('/cart/clear', 'CartController@clearCart')->name('cart.clear');
 
-    Route::get('/checkout', 'CartController@checkOut')->name('checkout');
+
 
     Route::get('/login', 'AuthController@shoLoginForm')->name('login');
     Route::post('/login', 'AuthController@processLogin');
@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Frontend'], function () {
     Route::get('/activate/{token}', 'AuthController@activate')->name('activate');
 
     Route::group(['middleware' => 'auth'], function () {
+        Route::get('/checkout', 'CartController@checkOut')->name('checkout');
         Route::post('/order', 'CartController@processOrder')->name('order');
         Route::get('/order/{id}', 'CartController@showOrderDetails')->name('order.details');
 
