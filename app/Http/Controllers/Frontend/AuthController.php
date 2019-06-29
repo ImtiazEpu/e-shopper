@@ -48,6 +48,7 @@ AuthController extends Controller
                 }
             }
             //$this->setSuccess('User logged in.');
+            Auth::logoutOtherDevices(request('password'));
             alert()->success('Welcome Back', auth()->user()->name . 'You are logged in!')->toToast($position = 'bottom-right');
             return redirect()->intended();
         }/*else
