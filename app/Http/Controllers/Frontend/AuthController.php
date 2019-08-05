@@ -38,18 +38,18 @@ AuthController extends Controller
         if (auth()->attempt($credentials)) {
             if (Auth::user()->hasAnyRole('admin')) {
                 //$this->setSuccess('Admin logged in.');
-                alert()->success('Success', 'Admin logged in!')->toToast();
+                alert()->success('Success', ' Admin logged in!')->toToast();
                 return redirect('/dashboard');
             } else {
                 if (auth()->user()->email_verified_at === null) {
                     auth()->logout();
-                    alert()->warning('Pending', 'Your account is not activated!')->toToast();
+                    alert()->warning('Pending', ' Your account is not activated!')->toToast();
                     return redirect()->route('login');
                 }
             }
             //$this->setSuccess('User logged in.');
+            alert()->success('Welcome Back', auth()->user()->name . ' You are logged in!')->toToast($position = 'bottom-right');
             Auth::logoutOtherDevices(request('password'));
-            alert()->success('Welcome Back', auth()->user()->name . 'You are logged in!')->toToast($position = 'bottom-right');
             return redirect()->intended();
         }/*else
             if (auth()->user()->email_verified_at === null) {
@@ -59,8 +59,6 @@ AuthController extends Controller
             $this->setSuccess('User logged in.');
             return redirect('/');
         }*/
-
-
         //$this->setError('Invalid credentials.');
         alert()->error('Invalid credentials', 'Your Email or password was incorrect!');
         return redirect()->back();
